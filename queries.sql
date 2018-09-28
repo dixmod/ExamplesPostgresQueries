@@ -111,3 +111,12 @@ where count_fols.count_fol = (
 	select max(count_fol)
 	from count_fols	
 )
+
+-- 10. зависимость числа побед команды от среднего возраста её игроков
+select AVG(EXTRACT(YEAR FROM age(player.birthday))) as avg_age_player, team."name", count(side.*) count_win 
+from player
+join team on player.team_id = team.id
+join side on side.team_id = team.id
+where side."result" = 'win'
+group by team."name"
+order by count_win desc
