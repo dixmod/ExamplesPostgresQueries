@@ -96,3 +96,18 @@ where count_game = (
 	select max(count_game) 
 	from day_count_game
 )
+
+-- 9. игрок(и), получившие самое большое кол-во штрафов
+with count_fols as (
+	select player_id, count(*) as count_fol
+	from "action"
+	where "type" in ('red', 'yellow')
+	group by player_id	
+)
+select count_fols.count_fol, player.* 
+from player
+join count_fols on player.id = count_fols.player_id
+where count_fols.count_fol = (
+	select max(count_fol)
+	from count_fols	
+)
