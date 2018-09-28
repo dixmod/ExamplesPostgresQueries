@@ -74,3 +74,25 @@ from player
 join cte ON player.id = cte.id 
 group by cte.dB
 order by cte.dB
+
+-- 8. дни чемпионата с максимальным числом игр в один день
+with cte as (
+	select
+		id,
+		to_char("date", 'YYYY-MM-DD') as dg		
+	from game
+), day_count_game as (
+	select 
+		count(*) as count_game, 
+		cte.dg as date_game, 
+	from game 
+	join cte ON game.id = cte.id
+	group by cte.dg
+	order by count_game desc, cte.dg
+)
+select * 
+from day_count_game
+where count_game = (
+	select max(count_game) 
+	from day_count_game
+)
