@@ -61,3 +61,16 @@ having count(*) in (
   order by counts_birthday desc
   limit 1
 )
+
+-- 7. календарь дней рождений, со списоком именинников
+with cte as (
+	select	
+		to_char(birthday, 'MM-DD') as dB,	
+		id
+	from player		
+)
+select cte.dB as holiday, string_agg(concat_ws(' ',"surname" , "name"),', ') as fio
+from player 
+join cte ON player.id = cte.id 
+group by cte.dB
+order by cte.dB
