@@ -30,7 +30,7 @@ from player
 order by age
 
 
--- 4. том стадионов по кол-ву проведённых игр
+-- 4. топ стадионов по кол-ву проведённых игр
 select stadium."name", count(*) as count_games
 from stadium
 join game on stadium.id = game.stadium_id
